@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./layouts/layout";
 import HomePage from "./pages/HomePage";
+import SearchPage from "./pages/SearchPage";
 
 const AppRoutes = () => {
   return (
@@ -11,6 +12,15 @@ const AppRoutes = () => {
         element={
           <Layout showHero>
             <HomePage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/search/:city"
+        element={
+          <Layout showHero={false}>
+            <SearchPage />
+          
           </Layout>
         }
       />
