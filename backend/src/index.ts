@@ -4,8 +4,10 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import UserRoute from "./routes/UserRoute";
 import MyRestaurantRoute from "./routes/MyRestaurantRoute";
+import RestaurantRoute from "./routes/RestaurantRoute";
 import logger from "./utils/logger";
 import { v2 as cloudinary } from "cloudinary";
+import { notFound } from "./handlers/errorHandler";
 mongoose
   .connect(process.env.MONGO_URL as string)
   .then(() => console.log("Connection to Database successfull"));
@@ -29,6 +31,13 @@ app.get("/health", async (req: Request, res: Response) => {
 app.use("/api/user", UserRoute);
 
 app.use("/api/my/restaurant", MyRestaurantRoute);
+
+app.use("/api/restaurant", RestaurantRoute);
+
+// handle not found apis
+// todo? maybe add 404 page html
+// res.sendfile(path.join(__dirname, 'public', '404.html'))
+app.use(notFound);
 
 app.listen(process.env.PORT || 7000, () => {
   console.log("Your server available at http://localhost:7000");
