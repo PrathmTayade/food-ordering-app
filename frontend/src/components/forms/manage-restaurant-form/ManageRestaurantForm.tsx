@@ -9,8 +9,8 @@ import MenuSection from "./MenuSection";
 import ImageSection from "./ImageSection";
 import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
-import { Restaurant } from "@/types";
 import { useEffect } from "react";
+import { Restaurant } from "@/lib/types";
 
 const formSchema = z
   .object({
@@ -70,7 +70,6 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
       return;
     }
 
-    // price lowest domination of 100 = 100pence == 1GBP
     const deliveryPriceFormatted = parseInt(
       (restaurant.deliveryPrice / 100).toFixed(2)
     );
