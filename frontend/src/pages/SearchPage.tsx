@@ -7,6 +7,7 @@ import { FC, useState } from "react";
 import { useParams } from "react-router-dom";
 import SortOptionDropdown from "./SortOptionDropdown";
 import PaginationSelector from "@/components/PaginationSelector";
+import CuisineFilter from "@/components/CuisineFilter";
 
 interface SearchPageProps {}
 
@@ -19,8 +20,18 @@ const SearchPage: FC<SearchPageProps> = ({}) => {
     sortOption: "bestMatch",
   });
 
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
   const { results, isLoading } = useSearchRestaurants(searchState, city);
 
+  // cusinses
+  const setSelectedCuisines = (selectedCuisines: string[]) => {
+    setSearchState((prevState) => ({
+      ...prevState,
+      selectedCuisines,
+      page: 1,
+    }));
+  };
   // sort option
   const setSortOption = (sortOption: string) => {
     setSearchState((prevState) => ({
@@ -64,15 +75,14 @@ const SearchPage: FC<SearchPageProps> = ({}) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5">
       <div id="cuisines-list">
-        {/* <CuisineFilter
+        <CuisineFilter
           selectedCuisines={searchState.selectedCuisines}
           onChange={setSelectedCuisines}
           isExpanded={isExpanded}
           onExpandedClick={() =>
             setIsExpanded((prevIsExpanded) => !prevIsExpanded)
           }
-        /> */}
-        CuisineFilter
+        />
       </div>
 
       <div id="main-content" className="flex flex-col gap-5">
