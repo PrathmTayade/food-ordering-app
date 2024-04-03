@@ -10,12 +10,9 @@ import { MenuItem as MenuItemType } from "@/lib/types";
 import CheckoutButton from "@/components/CheckoutButton";
 import { UserFormData } from "@/components/forms/user-profile-form/UserProfileForm";
 
-export type CartItem = {
-  _id: string;
-  name: string;
-  price: number;
+export interface CartItem extends MenuItemType {
   quantity: number;
-};
+}
 
 const DetailPage = () => {
   const { restaurantId } = useParams();
@@ -123,6 +120,9 @@ const DetailPage = () => {
             <MenuItem
               menuItem={menuItem}
               addToCart={() => addToCart(menuItem)}
+              isAddedToCart={cartItems.some(
+                (cartItem) => cartItem._id === menuItem._id
+              )}
             />
           ))}
         </div>
