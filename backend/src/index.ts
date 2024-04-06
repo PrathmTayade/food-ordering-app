@@ -1,13 +1,12 @@
-import express, { Request, Response } from "express";
+import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
 import "dotenv/config";
+import express, { Request, Response } from "express";
 import mongoose from "mongoose";
-import UserRoute from "./routes/UserRoute";
-import MyRestaurantRoute from "./routes/MyRestaurantRoute";
-import RestaurantRoute from "./routes/RestaurantRoute";
-import logger from "./utils/logger";
-import { v2 as cloudinary } from "cloudinary";
+import morgan from "morgan";
 import { notFound } from "./handlers/errorHandler";
+import ApiRoutes from "./routes";
+
 mongoose
   .connect(process.env.MONGO_URL as string)
   .then(() => console.log("Connection to Database successfull"));
@@ -20,23 +19,21 @@ cloudinary.config({
 });
 
 const app = express();
-app.use(express.json());
-app.use(cors());
 
+app.use(express.json());
+app.use(morgan("dev"));
+app.use(cors());
+app.use(express.static("public"));
+
+// health check
 app.get("/health", async (req: Request, res: Response) => {
-  logger.info("health check successfull");
-  res.send({ message: "health OK!" });
+  res.send({ message: "health OK!", status: 200 });
 });
 
-app.use("/api/user", UserRoute);
+// Api routes
+app.use("/api", ApiRoutes);
 
-app.use("/api/my/restaurant", MyRestaurantRoute);
-
-app.use("/api/restaurant", RestaurantRoute);
-
-// handle not found apis
-// todo? maybe add 404 page html
-// res.sendfile(path.join(__dirname, 'public', '404.html'))
+// 404 error handler
 app.use(notFound);
 
 app.listen(process.env.PORT || 7000, () => {

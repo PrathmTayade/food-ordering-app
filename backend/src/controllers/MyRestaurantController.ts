@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import logger from "../utils/logger";
 import Restaurant from "../models/restaurant";
-import { uploadImage } from "../utils/upload";
+import { uploadImage } from "../helpers/upload";
 import mongoose, { now } from "mongoose";
 
 const getMyRestaurant = async (req: Request, res: Response) => {

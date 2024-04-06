@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from "express";
+import path from "path";
+import logger from "../utils/logger";
 
 /*
   Catch Errors Handler
@@ -27,8 +29,8 @@ export const catchErrors = <T extends (...args: any[]) => Promise<any>>(
   If we hit a route that is not found, we mark it as 404 and pass it along to the next error handler to display
 */
 export const notFound = (req: Request, res: Response, next: NextFunction) => {
-  // todo? maybe add 404 page html
-  // res.sendfile(path.join(__dirname, 'public', '404.html'))
+  // ? add 404 page html
+  // res.sendFile(path.join(__dirname, "../../public", "404.html"));
 
   res.status(404).json({
     success: false,
