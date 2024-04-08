@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import { notFound } from "./handlers/errorHandler";
 import ApiRoutes from "./routes";
+import swaggerDocs from "./config/swagger";
 
 mongoose
   .connect(process.env.MONGO_URL as string)
@@ -32,6 +33,9 @@ app.get("/health", async (req: Request, res: Response) => {
 
 // Api routes
 app.use("/api", ApiRoutes);
+
+// Api docs
+swaggerDocs(app);
 
 // 404 error handler
 app.use(notFound);
