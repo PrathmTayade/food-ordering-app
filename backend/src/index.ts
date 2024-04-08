@@ -1,24 +1,20 @@
-import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
 import "dotenv/config";
 import express, { Request, Response } from "express";
-import mongoose from "mongoose";
 import morgan from "morgan";
 import { notFound } from "./handlers/errorHandler";
 import ApiRoutes from "./routes";
 import swaggerDocs from "./config/swagger";
+import connectDB from "./config/db";
+import connectCloudinary from "./config/cloudinary";
 
-mongoose
-  .connect(process.env.MONGO_URL as string)
-  .then(() => console.log("Connection to Database successfull"));
+// Database connection
+connectDB();
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true,
-});
+// Cloudinary connection
+connectCloudinary();
 
+// Express
 const app = express();
 
 app.use(express.json());
