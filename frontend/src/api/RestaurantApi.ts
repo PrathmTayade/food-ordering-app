@@ -1,13 +1,10 @@
 import { Restaurant, RestaurantSearchResponse, SearchState } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { API_BASE_URL } from "@/lib/utils";
 
 export const useGetRestaurant = (restaurantId?: string) => {
   const getRestaurantByIdRequest = async (): Promise<Restaurant> => {
-    const response = await fetch(
-      `${API_BASE_URL}/api/restaurant/${restaurantId}`
-    );
+    const response = await fetch(`${API_BASE_URL}/restaurant/${restaurantId}`);
 
     if (!response.ok) {
       throw new Error("Failed to get restaurant");
@@ -37,7 +34,7 @@ export const useSearchRestaurants = (
     params.set("sortOption", searchState.sortOption);
 
     const response = await fetch(
-      `${API_BASE_URL}/api/restaurant/search/${city}?${params.toString()}`
+      `${API_BASE_URL}/restaurant/search/${city}?${params.toString()}`
     );
 
     if (!response.ok) {

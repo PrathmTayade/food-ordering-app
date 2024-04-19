@@ -17,10 +17,14 @@ connectCloudinary();
 // Express
 const app = express();
 
-app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.static("public"));
+
+// raw data  for stripe webhook
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
+
+app.use(express.json());
 
 // health check
 app.get("/health", async (req: Request, res: Response) => {

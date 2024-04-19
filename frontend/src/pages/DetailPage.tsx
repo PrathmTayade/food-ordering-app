@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { MenuItem as MenuItemType } from "@/lib/types";
 import CheckoutButton from "@/components/CheckoutButton";
 import { UserFormData } from "@/components/forms/user-profile-form/UserProfileForm";
+import { useCreateCheckoutSession } from "@/api/OrderApi";
 
 export interface CartItem extends MenuItemType {
   quantity: number;
@@ -17,8 +18,8 @@ export interface CartItem extends MenuItemType {
 const DetailPage = () => {
   const { restaurantId } = useParams();
   const { restaurant, isLoading } = useGetRestaurant(restaurantId);
-  // const { createCheckoutSession, isLoading: isCheckoutLoading } =
-  //   useCreateCheckoutSession();
+  const { createCheckoutSession, isPending: isCheckoutLoading } =
+    useCreateCheckoutSession();
 
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
@@ -96,8 +97,10 @@ const DetailPage = () => {
       },
     };
 
-    // const data = await createCheckoutSession(checkoutData);
-    // window.location.href = data.url;
+    const data = await createCheckoutSession(checkoutData);
+
+    console.log("checkout", data);
+    window.location.href = data.url;
   };
 
   if (isLoading || !restaurant) {
@@ -138,8 +141,7 @@ const DetailPage = () => {
               <CheckoutButton
                 disabled={cartItems.length === 0}
                 onCheckout={onCheckout}
-                // isLoading={isCheckoutLoading}
-                isLoading={false}
+                isLoading={isCheckoutLoading}
               />
             </CardFooter>
           </Card>
