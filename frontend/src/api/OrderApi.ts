@@ -1,6 +1,7 @@
+import { Order } from "@/lib/types";
 import { API_BASE_URL } from "@/lib/utils";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 type CheckoutSessionRequest = {
@@ -16,6 +17,34 @@ type CheckoutSessionRequest = {
     addressLine1: string;
     city: string;
   };
+};
+
+export const useGetMyOrders = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const getMyOrdersRequest = async (): Promise<Order[]> => {
+    const accessToken = await getAccessTokenSilently();
+
+    const response = await fetch(`${API_BASE_URL}/order/my`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to get orders");
+    }
+
+    return response.json();
+  };
+
+  const { data: orders, isPending } = useQuery({
+    queryKey: ["fetchMyOrders"],
+    queryFn: getMyOrdersRequest,
+    refetchInterval: 5000,
+  });
+
+  return { orders, isPending };
 };
 
 export const useCreateCheckoutSession = () => {

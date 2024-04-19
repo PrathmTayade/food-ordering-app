@@ -119,7 +119,7 @@ export const useGetMyRestaurantOrders = () => {
   const getMyRestaurantOrdersRequest = async (): Promise<Order[]> => {
     const accessToken = await getAccessTokenSilently();
 
-    const response = await fetch(`${API_BASE_URL}/my/restaurant/order`, {
+    const response = await fetch(`${API_BASE_URL}/my/restaurant/orders`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
@@ -133,14 +133,13 @@ export const useGetMyRestaurantOrders = () => {
     return response.json();
   };
 
-  const { data: orders, isLoading } = useQuery(
-    {
-      queryKey: ["fetchMyRestaurantOrders"],
-      queryFn: getMyRestaurantOrdersRequest,
-    } // , staleTime: 1000 * 60 * 5 } // 5 minutes
-  );
+  const { data: orders, isPending } = useQuery({
+    queryKey: ["fetchMyRestaurantOrders"],
+    queryFn: getMyRestaurantOrdersRequest,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 
-  return { orders, isLoading };
+  return { orders, isPending };
 };
 
 type UpdateOrderStatusRequest = {

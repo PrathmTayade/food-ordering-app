@@ -169,4 +169,16 @@ const stripWebhookHandler = async (request: Request, response: Response) => {
   response.send();
 };
 
-export default { createCheckoutSession, stripWebhookHandler };
+const getMyOrders = async (req: Request, res: Response) => {
+  try {
+    const orders = await Order.find({ user: req.userId }).populate(
+      "restaurant"
+    ).populate("user");
+    res.json(orders);
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export default { createCheckoutSession, stripWebhookHandler, getMyOrders };

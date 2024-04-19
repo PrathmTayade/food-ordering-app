@@ -1,8 +1,9 @@
-import { Label } from "./ui/label";
+import { cuisineList } from "@/lib/items-config";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import { ChangeEvent } from "react";
+import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import { cuisineList } from "@/lib/items-config";
+
 
 type Props = {
   onChange: (cuisines: string[]) => void;
