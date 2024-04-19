@@ -1,4 +1,5 @@
 import cloudinary from "cloudinary";
+import multer from "multer";
 
 export const uploadImage = async (file: Express.Multer.File) => {
   const image = file;
@@ -8,3 +9,12 @@ export const uploadImage = async (file: Express.Multer.File) => {
 
   return uploadResponse.secure_url; // Return the secure URL of the uploaded image
 };
+
+export const storage = multer.memoryStorage();
+
+export const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5mb
+  },
+});
