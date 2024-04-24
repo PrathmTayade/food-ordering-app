@@ -106,8 +106,8 @@ const createStipeSession = async (
   const sessionData = await stripe.checkout.sessions.create({
     line_items: lineItems,
     mode: "payment",
-    customer_creation: "always",
-    shipping_address_collection: { allowed_countries: ["IN"] },
+    // customer_creation: "always",
+    // shipping_address_collection: { allowed_countries: ["IN"] },
     shipping_options: [
       {
         shipping_rate_data: {
@@ -171,14 +171,16 @@ const stripWebhookHandler = async (request: Request, response: Response) => {
 
 const getMyOrders = async (req: Request, res: Response) => {
   try {
-    const orders = await Order.find({ user: req.userId }).populate(
-      "restaurant"
-    ).populate("user");
+    const orders = await Order.find({ user: req.userId })
+      .populate("restaurant")
+      .populate("user");
     res.json(orders);
   } catch (error) {
     logger.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+// todo update order status apis
 
 export default { createCheckoutSession, stripWebhookHandler, getMyOrders };

@@ -31,6 +31,8 @@ const AuthProvider = ({ children }: Props) => {
         audience,
       }}
       onRedirectCallback={onRedirectCallback}
+      // to persist login state in local storage
+      cacheLocation="localstorage"
     >
       {children}
     </Auth0Provider>

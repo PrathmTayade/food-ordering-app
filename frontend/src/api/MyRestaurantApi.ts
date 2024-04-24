@@ -137,6 +137,8 @@ export const useGetMyRestaurantOrders = () => {
     queryKey: ["fetchMyRestaurantOrders"],
     queryFn: getMyRestaurantOrdersRequest,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchInterval: 1000 * 60 * 5, // 5 minutes
+    refetchOnMount: true,
   });
 
   return { orders, isPending };
