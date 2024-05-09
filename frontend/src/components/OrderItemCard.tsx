@@ -20,11 +20,11 @@ type Props = {
 
 const OrderItemCard = ({ order }: Props) => {
   const { updateRestaurantStatus, isLoading } = useUpdateMyRestaurantOrder();
-  const [status, setStatus] = useState<OrderStatus>(order.status);
+  const [status, setStatus] = useState<OrderStatus>(order.orderStatus);
 
   useEffect(() => {
-    setStatus(order.status);
-  }, [order.status]);
+    setStatus(order.orderStatus);
+  }, [order.orderStatus]);
 
   const handleStatusChange = async (newStatus: OrderStatus) => {
     await updateRestaurantStatus({

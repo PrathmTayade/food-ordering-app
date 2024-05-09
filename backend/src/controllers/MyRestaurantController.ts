@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import logger from "../utils/logger";
-import Restaurant from "../models/restaurant";
+import mongoose from "mongoose";
 import { uploadImage } from "../helpers/upload";
-import mongoose, { now } from "mongoose";
 import Order from "../models/order";
+import Restaurant from "../models/restaurant";
+import logger from "../utils/logger";
 
 const getMyRestaurant = async (req: Request, res: Response) => {
   logger.debug(req);
@@ -94,6 +94,33 @@ const getMyRestaurantOrders = async (req: Request, res: Response) => {
     res.status(200).json(orders);
   } catch (error) {
     logger.error(error);
+    res.status(500).json({ message: "Unable to upadte order status." });
+  }
+};
+
+const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+
+    const { status } = req.body;
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    const restaurant = await Restaurant.findById(order.restaurant);
+
+    if (restaurant?.user?._id.toString() !== req.userId) {
+      return res.status(401).send();
+    }
+
+    order.orderStatus = status;
+
+    await order.save();
+
+    res.status(200).json(order);
+  } catch (error) {
+    logger.error(error);
     res.status(500).json({ message: "Something went wrong" });
   }
 };
@@ -102,4 +129,5 @@ export default {
   createMyRestaurant,
   updateMyRestaurant,
   getMyRestaurantOrders,
+  updateOrderStatus,
 };

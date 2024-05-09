@@ -8,12 +8,18 @@ const router = Router();
 
 router.get("/", jwtCheck, jwtParse, MyRestaurantController.getMyRestaurant);
 
-
 router.get(
   "/orders",
   jwtCheck,
   jwtParse,
   MyRestaurantController.getMyRestaurantOrders
+);
+
+router.patch(
+  "/order/:orderId/status",
+  jwtCheck,
+  jwtParse,
+  MyRestaurantController.updateOrderStatus
 );
 
 router.post(

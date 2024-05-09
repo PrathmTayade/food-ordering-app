@@ -24,7 +24,7 @@ const OrderStatusHeader = ({ order }: Props) => {
 
   const getOrderStatusInfo = () => {
     return (
-      ORDER_STATUS.find((o) => o.value === order.status) || ORDER_STATUS[0]
+      ORDER_STATUS.find((o) => o.value === order.orderStatus) || ORDER_STATUS[0]
     );
   };
 

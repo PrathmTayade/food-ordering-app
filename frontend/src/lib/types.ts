@@ -56,7 +56,7 @@ export type Order = {
     email: string;
   };
   totalAmount: number;
-  status: OrderStatus;
+  orderStatus: OrderStatus;
   createdAt: string;
   restaurantId: string;
 };
@@ -66,7 +66,6 @@ export type OrderStatusInfo = {
   value: OrderStatus;
   progressValue: number;
 };
-
 
 export type SearchState = {
   searchQuery: string;
