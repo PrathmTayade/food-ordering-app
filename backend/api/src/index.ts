@@ -25,7 +25,9 @@ app.use(express.static("public"));
 app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
 
 app.use(express.json());
-
+app.get("/", (req: Request, res: Response) => {
+  res.send("Welcome to Food ordering api: PrathmTayade");
+});
 // health check
 app.get("/health", async (req: Request, res: Response) => {
   res.send({ message: "health OK!", status: 200 });
